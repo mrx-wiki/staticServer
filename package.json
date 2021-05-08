@@ -19,7 +19,7 @@
   "homepage": "https://github.com/gaoyakang/staticServer#readme",
   "dependencies": {
     "commander": "^3.0.2",
-    "handlebars": "^4.3.1"
+    "handlebars": "^4.7.7"
   },
   "bin": {
     "server": "./src/index.js"
