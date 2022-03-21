@@ -23,11 +23,11 @@ const template = handlebars.compile(source.toString())
 module.exports = async function (req, res, pathUrl) {
   try {
     const stats = await stat(pathUrl)
+    //如果是文件，展示当前文件内容
     if(stats.isFile()){
       // 动态设置文件类型
       const type = ContentType(pathUrl)
       res.setHeader('Content-Type',type)
-      // console.log(path.extname(pathUrl))
       // 判断缓存
       if(isFresh(stats,req,res)){
         res.statusCode = 304
@@ -37,7 +37,7 @@ module.exports = async function (req, res, pathUrl) {
 
       // 划定range范围
       let readStream;
-      const { code, start, end } = range(stats.size, req, res)
+      const { code, start, end } = range(stats.size, req, res);
       if(code === 200){
         // 没有请求范围
         res.statusCode = 200
@@ -54,7 +54,10 @@ module.exports = async function (req, res, pathUrl) {
         readStream = compress(readStream, req, res)
       }
       readStream.pipe(res)
+
     }else if(stats.isDirectory()){
+      // console.log(stats.isDirectory())
+      //如果是文件夹，返回当前文件夹中的内容
       const files = await readdir(pathUrl)
       res.statusCode = 200
       res.setHeader('Content-Type','text/html')

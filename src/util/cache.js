@@ -21,12 +21,13 @@ function refreshRes (stats,res) {
 
   if(etag){
   	// console.log('etag')
-    res.setHeader('ETag',`${stats.size}-${stats.mtime}`)
+    res.setHeader('ETag',`${stats.size}-${stats.mtime.toUTCString()}`)
   }
 }
 
 
 module.exports = function isFresh(stats, req, res){
+  
   refreshRes(stats,res)
   const lastModified = req.headers['if-modified-since']
   const etag = req.headers['if-none-match']
